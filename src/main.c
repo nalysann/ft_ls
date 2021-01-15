@@ -6,7 +6,7 @@
 /*   By: bgilwood <bgilwood@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/13 18:43:22 by bgilwood          #+#    #+#             */
-/*   Updated: 2020/11/01 23:32:43 by bgilwood         ###   ########.fr       */
+/*   Updated: 2021/01/14 16:23:18 by nalysann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void	process_dir(char *dir_name, int flags)
 	}
 }
 
-int		main(int argc, char **argv)
+int		main(int argc, char *argv[])
 {
 	DIR				*fd;
 	struct stat		*st;
