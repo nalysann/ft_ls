@@ -16,21 +16,10 @@
 # include <dirent.h>
 # include "ft_list.h"
 
-# define FLAG_A_LOWER 1
-# define FLAG_L_LOWER 2
-# define FLAG_R_LOWER 4
-# define FLAG_R_UPPER 8
-# define FLAG_T_LOWER 16
+
 
 DIR						*open_folder(char *name);
 t_user_input			*parse_input(int argc, char **argv);
-
-typedef struct			s_user_input
-{
-	int					flags;
-	int					num_directories;
-	char				**directory_names;
-}						t_user_input;
 
 typedef struct			s_file
 {
