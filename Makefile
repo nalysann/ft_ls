@@ -16,22 +16,25 @@ NAME := ft_ls
 
 SRC_DIR := src
 
-SRC :=
+SRC := cmp.c \
+       error.c \
+       init.c \
+       main.c \
+       parse.c \
+       process.c \
 
 OBJ := $(SRC:.c=.o)
-
 DEP := $(SRC:.c=.d)
 
 # **************************************************************************** #
 
 FT_DIR := libft
-
 FT := libft.a
 
 # **************************************************************************** #
 
 INC_DIRS := include \
-            $(FT_DIR)/include
+            $(FT_DIR)/include \
 
 # **************************************************************************** #
 
@@ -42,14 +45,14 @@ DEP := $(addprefix $(OBJ_DIR)/, $(DEP))
 
 # **************************************************************************** #
 
-UNAME_S = $(shell uname -s)
+UNAME_S := $(shell uname -s)
 
 ifeq ($(UNAME_S), Darwin)
-    CC = clang
+    CC := clang
 endif
 
 ifeq ($(UNAME_S), Linux)
-    CC = gcc
+    CC := gcc
 endif
 
 # **************************************************************************** #
@@ -65,14 +68,14 @@ LDLIBS += -lft
 
 # **************************************************************************** #
 
-RESET = \033[0;0m
-RED = \033[0;31m
-GREEN = \033[0;32m
-YELLOW = \033[0;33m
-BLUE = \033[0;34m
-MAGENTA = \033[0;35m
-CYAN = \033[0;36m
-WHITE = \033[0;37m
+RESET   := \033[0;0m
+RED     := \033[0;31m
+GREEN   := \033[0;32m
+YELLOW  := \033[0;33m
+BLUE    := \033[0;34m
+MAGENTA := \033[0;35m
+CYAN    := \033[0;36m
+WHITE   := \033[0;37m
 
 # **************************************************************************** #
 
@@ -82,12 +85,12 @@ WHITE = \033[0;37m
 
 all:
 	@printf "$(CYAN)>>> Making $(FT_DIR) <<<\n$(RESET)"
-	@$(MAKE) $(FT_DIR)/$(FT)
+	@$(MAKE) -C $(FT_DIR)
 	@printf "$(CYAN)>>> Making $(NAME) <<<\n$(RESET)"
-	@$(MAKE) $(LS)
+	@$(MAKE) $(NAME)
 
 $(FT_DIR)/$(FT):
-	@make -C $(FT_DIR)
+	@$(MAKE) -C $(FT_DIR)
 
 $(NAME): $(OBJ) $(FT_DIR)/$(FT)
 	@printf "$(GREEN)"
@@ -102,7 +105,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 	@printf "$(RESET)"
 
-include $(wildcard $(DEP))
+-include $(DEP)
 
 clean:
 	@printf "$(CYAN)>>> Cleaning $(FT_DIR) <<<\n$(RESET)"
