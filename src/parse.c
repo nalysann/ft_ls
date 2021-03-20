@@ -10,23 +10,71 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_ls.h"
+#include "args.h"
+#include "cmp.h"
+#include "error.h"
+#include "options.h"
+#include "parse.h"
 
-t_args	*parse(int argc, char *argv[], t_args *args, unsigned *options)
+#include "ft_vector.h"
+#include "ft_stdio.h"
+#include "ft_string.h"
+
+#include <errno.h>
+#include <stddef.h>
+#include <sys/stat.h>
+
+static int		parse_options(int argc, char *argv[], unsigned *options)
 {
-	t_user_input	*res;
-	char			*dir_name;
-	char			**dirs;
+	int		i;
+	int		j;
+	char	*pos;
 
-	res = (t_user_input*)ft_memalloc(sizeof(t_user_input));
-	// TODO: actually read user input
+	i = 1;
+	while (i < argc)
+	{
+		if (argv[i][0] != '-' || ft_strcmp(argv[i], "-") == 0)
+			break ;
+		if (ft_strcmp(argv[i], "--") == 0)
+			return (i + 1);
+		j = 1;
+		while (argv[i][j] != '\0')
+		{
+			pos = ft_strchr(OPTIONS, argv[i][j]);
+			if (pos == NULL)
+				illegal_option(argv[i][j]);
+			*options |= (1 << (pos - OPTIONS));
+			++j;
+		}
+		++i;
+	}
+	return (i);
+}
 
-	res->num_directories = 1;
-	dir_name = ft_strdup(".");
-	dirs = (char**)ft_memalloc(sizeof(char*) * 2);
-	dirs[0] = dir_name;
-	res->directory_names = dirs;
-	res->num_directories = 1;
-	res->flags = 0;
-	return res;
+void	parse(int argc, char *argv[], t_args *args, unsigned *options)
+{
+	static char		*dot = ".";
+	int				i;
+	struct stat		st;
+
+	i = parse_options(argc, argv, options);
+	if (i == argc)
+		vector_push_back(&args->dirs, dot);
+	while (i < argc)
+	{
+		if (stat(argv[i], &st) != 0)
+			if (errno == ENOENT)
+				vector_push_back(&args->absent, argv[i]);
+			else
+				ft_error(DEBUG_MSG, E_DEBUG);
+		else
+			if (S_ISDIR(st.st_mode))
+				vector_push_back(&args->dirs, argv[i]);
+			else
+				vector_push_back(&args->files, argv[i]);
+		++i;
+	}
+	vector_sort(&args->absent, cmp_lexicographical);
+	vector_sort(&args->dirs, cmp_lexicographical);
+	vector_sort(&args->files, cmp_lexicographical);
 }
