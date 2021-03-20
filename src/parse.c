@@ -11,9 +11,8 @@
 /* ************************************************************************** */
 
 #include "ft_ls.h"
-#include "libft.h"
 
-t_user_input	*parse_input(int argc, char **argv)
+t_args	*parse(int argc, char *argv[], t_args *args, unsigned *options)
 {
 	t_user_input	*res;
 	char			*dir_name;
