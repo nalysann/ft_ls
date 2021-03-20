@@ -1,4 +1,4 @@
-# object files, dependency files, libraries, binaries
+# compilation artifacts
 *.o
 *.d
 *.a
