@@ -5,7 +5,10 @@
 #include "ft_vector.h"
 
 #include <errno.h>
+#include <stddef.h>
 #include <string.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 static void		process_absent(t_vector absent, unsigned *options)
 {
@@ -13,29 +16,53 @@ static void		process_absent(t_vector absent, unsigned *options)
 
 	i = 0;
 	while (i < absent.size)
-	{
-		ft_printf("ft_ls: %s: %s\n", absent.data[i], strerror(ENOENT));
-		++i;
-	}
-	if (i > 0)
+		ft_dprintf(STDERR_FILENO,"ft_ls: %s: %s\n", absent.data[i++], strerror(ENOENT));
+	if (absent.size > 0)
 		*options |= OP_FAIL;
 }
 
-//static void		process_files(t_vector files, unsigned *options)
-//{
-//	// TODO
-//}
-//
-//static void		process_dirs(t_vector dirs, unsigned *options)
-//{
-//	// TODO
-//}
+static void		process_files(t_vector files, unsigned *options)
+{
+	size_t			i;
+	struct stat		st;
+
+	i = 0;
+	while (i < files.size)
+	{
+		if (!(*options & OP_A_LOWER))
+		{
+			++i;
+			continue ;
+		}
+	}
+
+	if (flags & FLAG_T_LOWER)
+		stat(dir->name, &st);
+	add_file_to_list(dir, st.st_mtimespec.tv_nsec, file->d_namlen,
+					 file->d_name, file->d_type);
+}
+
+static void		process_dirs(t_vector dirs, unsigned *options)
+{
+	// TODO
+}
+
+static void		process_recursive(t_vector files,
+				t_vector dirs, unsigned *options)
+{
+	// TODO
+}
 
 void		process(t_args *args, unsigned *options)
 {
 	process_absent(args->absent, options);
-//	process_files(args->files, options);
-//	process_dirs(args->dirs, options);
+	if (*options & OP_R_UPPER)
+		process_recursive(args->files, args->dirs, options);
+	else
+	{
+		process_files(args->files, options);
+		process_dirs(args->dirs, options);
+	}
 }
 
 //void	print_error(char *dir_name)
@@ -70,18 +97,6 @@ void		process(t_args *args, unsigned *options)
 //	ft_memcpy(string_name, name, namelen);
 //	new_file->name = string_name;
 //	list_push_back(dir->sub_dirs, new_file);
-//}
-//
-//void	process_file(t_file *dir, struct dirent *file, int flags)
-//{
-//	struct stat		st;
-//
-//	if (!(flags & FLAG_A_LOWER))
-//		;// check name for "." or ".." and exit if it is
-//	if (flags & FLAG_T_LOWER)
-//		stat(dir->name, &st);
-//	add_file_to_list(dir, st.st_mtimespec.tv_nsec, file->d_namlen,
-//					 file->d_name, file->d_type);
 //}
 //
 //void	process_dir_recursive(t_file *dir, int flags)

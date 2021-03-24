@@ -65,7 +65,7 @@ void	parse(int argc, char *argv[], t_args *args, unsigned *options)
 		if (stat(argv[i], &st) != 0)
 			if (errno == ENOENT)
 				vector_push_back(&args->absent, argv[i]);
-			else
+			else // TODO
 				ft_error(DEBUG_MSG, E_DEBUG);
 		else
 			if (S_ISDIR(st.st_mode))
