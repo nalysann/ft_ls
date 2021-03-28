@@ -1,30 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ls.h                                            :+:      :+:    :+:   */
+/*   process_files_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bgilwood <bgilwood@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/13 22:25:56 by bgilwood          #+#    #+#             */
-/*   Updated: 2021/03/28 20:15:07 by bgilwood         ###   ########.fr       */
+/*   Created: 2021/03/28 19:16:15 by bgilwood          #+#    #+#             */
+/*   Updated: 2021/03/28 20:12:20 by bgilwood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_LS
-# define FT_LS
+#include "ft_vector.h"
+#include "options.h"
 
-# include <dirent.h>
-# include "ft_list.h"
-
-DIR						*open_folder(char *name);
-
-typedef struct			s_file
+void	output_files(t_vector files, unsigned *options)
 {
-	t_list				*sub_dirs;
-	char				*name;
-	long				date;
-	char				*type;
-	struct s_file		*parent;
-}						t_file;
-
-#endif
+	
+	(void)files;
+	(void)options;
+}

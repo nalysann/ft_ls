@@ -1,8 +1,10 @@
 #include "args.h"
 #include "options.h"
+#include "process.h"
 
 #include "ft_stdio.h"
 #include "ft_vector.h"
+#include "ft_stdlib.h"
 
 #include <errno.h>
 #include <stddef.h>
@@ -24,45 +26,48 @@ static void		process_absent(t_vector absent, unsigned *options)
 static void		process_files(t_vector files, unsigned *options)
 {
 	size_t			i;
-	struct stat		st;
+	char			*filename;
+	struct stat		*st;
+	t_vector		file_stats;
 
+	file_stats = vector_on_stack();
 	i = 0;
 	while (i < files.size)
 	{
-		if (!(*options & OP_A_LOWER))
-		{
-			++i;
-			continue ;
-		}
+		filename = (char *)vector_get(&files, i++);
+		st = (struct stat*)ft_memalloc(sizeof(struct stat));
+		stat(filename, st);
+		vector_push_back(&file_stats, st);
 	}
-
-	if (flags & FLAG_T_LOWER)
-		stat(dir->name, &st);
-	add_file_to_list(dir, st.st_mtimespec.tv_nsec, file->d_namlen,
-					 file->d_name, file->d_type);
+	// if (*options != 0)
+	// 	sort_files(file_stats, options);
+	output_files(file_stats, options);
 }
 
 static void		process_dirs(t_vector dirs, unsigned *options)
 {
+	(void)dirs;
+	(void)options;
 	// TODO
 }
 
 static void		process_recursive(t_vector files,
 				t_vector dirs, unsigned *options)
 {
+	(void)dirs;
+	(void)options;
+	(void)files;
 	// TODO
 }
 
 void		process(t_args *args, unsigned *options)
 {
 	process_absent(args->absent, options);
+	process_files(args->files, options);
 	if (*options & OP_R_UPPER)
 		process_recursive(args->files, args->dirs, options);
 	else
-	{
-		process_files(args->files, options);
 		process_dirs(args->dirs, options);
-	}
 }
 
 //void	print_error(char *dir_name)

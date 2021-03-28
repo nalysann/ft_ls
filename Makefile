@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nalysann <urbilya@gmail.com>               +#+  +:+       +#+         #
+#    By: bgilwood <bgilwood@student.21-school.ru>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/09 19:00:32 by nalysann          #+#    #+#              #
-#    Updated: 2020/10/09 19:00:58 by nalysann         ###   ########.fr        #
+#    Updated: 2021/03/28 20:23:49 by bgilwood         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ SRC := cmp.c \
        main.c \
        parse.c \
        process.c \
+	   process_files_utils.c \
 
 OBJ := $(SRC:.c=.o)
 DEP := $(SRC:.c=.d)
