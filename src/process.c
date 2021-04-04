@@ -1,6 +1,7 @@
 #include "args.h"
 #include "options.h"
 #include "process.h"
+#include "sorting.h"
 
 #include "ft_stdio.h"
 #include "ft_vector.h"
@@ -37,10 +38,10 @@ static void		process_files(t_vector files, unsigned *options)
 		filename = (char *)vector_get(&files, i++);
 		st = (struct stat*)ft_memalloc(sizeof(struct stat));
 		stat(filename, st);
-		vector_push_back(&file_stats, st);
+		push_file_stat(&file_stats, st, filename);
 	}
-	// if (*options != 0)
-	// 	sort_files(file_stats, options);
+	if (*options != 0)
+		sort_files(file_stats, options);
 	output_files(file_stats, options);
 }
 

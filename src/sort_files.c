@@ -6,7 +6,7 @@
 /*   By: bgilwood <bgilwood@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 23:59:07 by bgilwood          #+#    #+#             */
-/*   Updated: 2021/03/28 20:15:07 by bgilwood         ###   ########.fr       */
+/*   Updated: 2021/04/04 20:44:40 by bgilwood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,70 +14,61 @@
 #include "libft.h"
 #include "options.h"
 
-// not tested
-
-int		compare_files(void *file1_ptr, void *file2_ptr, int flags)
+int		compare_by_time_accessed(const void *obj1, const void *obj2)
 {
-	int	tmp;
-	t_file *file1;
-	t_file *file2;
+	t_file	*file1;
+	t_file	*file2;
+	int		time_diff;
 
-	file1 = (t_file*)file1_ptr;
-	file2 = (t_file*)file2_ptr;
-	if ((flags & OP_T_LOWER) && (flags & OP_R_LOWER))
-	{
-		tmp = file2->date - file1->date;
-		if (tmp)
-			return (tmp);
-	}
-	if ((flags & OP_T_LOWER))
-	{
-		tmp = file1->date - file2->date;
-		if (tmp)
-			return (tmp);
-	}
-	if (flags & OP_R_LOWER)
-		return (ft_strcmp(file2->name, file1->name));
-	return (ft_strcmp(file1->name, file2->name));
+	if (obj1 == NULL || obj2 == NULL)
+		return 0;
+	file1 = (t_file*)obj1;
+	file2 = (t_file*)obj2;
+	time_diff = file2->st.st_atimespec.tv_sec - file1->st.st_atimespec.tv_sec;
+	if (time_diff == 0)
+		return ft_strcmp(file1->name, file2->name);
+	return (file2->st.st_atimespec.tv_sec - file1->st.st_atimespec.tv_sec);
 }
 
+int		compare_by_time_accessed_rev(const void *obj1, const void *obj2)
+{
+	t_file	*file1;
+	t_file	*file2;
+	int		time_diff;
 
+	if (obj1 == NULL || obj2 == NULL)
+		return 0;
+	file1 = (t_file*)obj1;
+	file2 = (t_file*)obj2;
+	time_diff = file1->st.st_atimespec.tv_sec - file2->st.st_atimespec.tv_sec;
+	if (time_diff == 0)
+		return ft_strcmp(file2->name, file1->name);
+	return (file1->st.st_atimespec.tv_sec - file2->st.st_atimespec.tv_sec);
+}
 
+int		compare_by_name_rev(const void *obj1, const void *obj2)
+{
+	t_file	*file1;
+	t_file	*file2;
 
-// void	switch_data(t_node *node1, t_node *node2)
-// {
-// 	void	*tmp;
+	if (obj1 == NULL || obj2 == NULL)
+		return 0;
+	file1 = (t_file*)obj1;
+	file2 = (t_file*)obj2;
+	return ft_strcmp(file2->name, file1->name);
+}
 
-// 	tmp = node1->data;
-// 	node1->data = node2->data;
-// 	node2->data = tmp;
-// }
-
-// void	sort_list(t_list *files, int flags)
-// {
-// 	t_node	*node;
-// 	int		len;
-// 	int		i;
-// 	int		sorted;
-
-// 	len = files->size;
-// 	if (files->front == NULL || (files->front)->next == NULL)
-// 		return;
-// 	while (--len)
-// 	{
-// 		node = files->front;
-// 		sorted = 1;
-// 		i = 0;
-// 		while (i++ < len)
-// 		{
-// 			if (compare_files(node->data, node->next->data, flags) > 0)
-// 			{
-// 				switch_data(node, node->next);
-// 				sorted = 0;
-// 			}
-// 			node = node->next;
-// 		}
-// 		if (sorted)
-// 			break;
-// 	}
-// }
+void	sort_files(t_vector file_stats, unsigned *options)
+{
+	if (*options & OP_R_LOWER)
+	{
+		if (*options & OP_T_LOWER)
+			vector_sort(&file_stats, compare_by_time_accessed_rev);
+		else
+			vector_sort(&file_stats, compare_by_name_rev);
+	}
+	if (*options & OP_T_LOWER)
+			vector_sort(&file_stats, compare_by_time_accessed);
+	else
+		;// do nothing because files are sorted by name
+}
