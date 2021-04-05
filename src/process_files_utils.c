@@ -6,7 +6,7 @@
 /*   By: bgilwood <bgilwood@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/28 19:16:15 by bgilwood          #+#    #+#             */
-/*   Updated: 2021/04/04 20:41:32 by bgilwood         ###   ########.fr       */
+/*   Updated: 2021/04/05 21:38:47 by bgilwood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,17 @@
 
 void	output_files(t_vector files, unsigned *options)
 {
-	
-	(void)files;
-	(void)options;
+	t_file	*file1;
+	size_t	i;
+
+(void)options;
+	i = 0;
+	while (i < files.size)
+	{
+		file1 = vector_get(&files, i);
+		ft_printf("%s\n", file1->name);
+		i++;
+	}
 }
 
 void	push_file_stat(t_vector *file_stats, struct stat *st, char *filename)
@@ -33,4 +41,14 @@ void	push_file_stat(t_vector *file_stats, struct stat *st, char *filename)
 	file->st = *st;
 	file->name = filename;
 	vector_push_back(file_stats, file);
+}
+
+DIR		*open_folder(char *name)
+{
+	DIR	*dir_stream;
+
+	dir_stream = opendir(name);
+	if (dir_stream == NULL)
+		; // error code??
+	return dir_stream;
 }

@@ -45,11 +45,41 @@ static void		process_files(t_vector files, unsigned *options)
 	output_files(file_stats, options);
 }
 
+#include <dirent.h>
+void	process_dir(char *dir_name, unsigned *options)
+{
+	DIR				*fd;
+	struct stat		*st;
+	struct dirent	*file;
+	t_vector		file_stats;
+
+	fd = open_folder(dir_name);
+	file_stats = vector_on_stack();
+	while (1)
+	{
+		file = readdir(fd);
+		if (!file)
+			break;
+		st = (struct stat*)ft_memalloc(sizeof(struct stat));
+		stat(file->d_name, st);
+		push_file_stat(&file_stats, st, file->d_name);
+	}
+	sort_files(file_stats, options);
+	output_files(file_stats, options);
+}
+
 static void		process_dirs(t_vector dirs, unsigned *options)
 {
-	(void)dirs;
-	(void)options;
-	// TODO
+	size_t	i;
+	char	*dir_name;
+
+	i = 0;
+	while (i < dirs.size)
+	{
+		dir_name = vector_get(&dirs, i);
+		process_dir(dir_name, options);
+		i++;
+	}
 }
 
 static void		process_recursive(t_vector files,
@@ -71,77 +101,52 @@ void		process(t_args *args, unsigned *options)
 		process_dirs(args->dirs, options);
 }
 
-//void	print_error(char *dir_name)
-//{
-//	write(1, "cannot open directory", 22);
-//	exit(1);
-//}
-//
-//DIR		*open_folder(char *name)
-//{
-//	DIR	*dir_stream;
-//
-//	dir_stream = opendir(name);
-//	if (dir_stream == NULL)
-//		print_error(name); // error code??
-//	return dir_stream;
-//}
-//
-//void	add_file_to_list(t_file *dir, long time_modified, __uint8_t namelen,
-//						 char *name, int file_type)
-//{
-//	t_file	*new_file;
-//	char	*string_name;
-//
-//	new_file = (t_file*)ft_memalloc(sizeof(t_file));
-//	if (new_file == NULL)
-//		exit_with_error(LIST_ALLOC_MSG, E_LIST_ALLOC);
-//	new_file->date = time_modified;
-//	new_file->parent = dir;
-//	new_file->type = file_type;
-//	string_name = (char*)ft_memalloc(namelen + 1);
-//	ft_memcpy(string_name, name, namelen);
-//	new_file->name = string_name;
-//	list_push_back(dir->sub_dirs, new_file);
-//}
-//
-//void	process_dir_recursive(t_file *dir, int flags)
-//{
-//	DIR						*fd;
-//	static struct dirent	*filename;
-//	static struct stat		st;
-//
-//	fd = open_folder(dir->name);
-//	ft_bzero(&st, sizeof(struct stat));
-//	while (1)
-//	{
-//		filename = readdir(fd);
-//		process_file(dir, filename, flags);
-//	}
-//	sort_list(dir->sub_dirs, flags);
-//	print_list(dir->sub_dirs, flags);
-//	if (flags & FLAG_R_UPPER)
-//	{
-//		remove_non_dirs(dir->sub_dirs); // free some memory
-//		// recursively call self on each remaining list member
-//	}
-//}
-//
-//void	process_dir(char *dir_name, int flags)
-//{
-//	DIR			*fd;
-//	struct stat	*st;
-//	struct dirent *filename;
-//
-//	fd = open_folder(dir_name);
-//	st = (struct stat*)malloc(sizeof(struct stat));
-//	while (1)
-//	{
-//		filename = readdir(fd);
-//		if (!filename)
-//			break;
-//		write(1, filename->d_name, filename->d_namlen);
-//		stat("includes", st);
-//		write(1, "\n", 1);
-//	}
-//}
+// void	print_error(char *dir_name)
+// {
+// 	write(1, "cannot open directory", 22);
+// 	exit(1);
+// }
+
+
+
+// void	add_file_to_list(t_file *dir, long time_modified, __uint8_t namelen,
+// 						 char *name, int file_type)
+// {
+// 	t_file	*new_file;
+// 	char	*string_name;
+
+// 	new_file = (t_file*)ft_memalloc(sizeof(t_file));
+// 	if (new_file == NULL)
+// 		exit_with_error(LIST_ALLOC_MSG, E_LIST_ALLOC);
+// 	new_file->date = time_modified;
+// 	new_file->parent = dir;
+// 	new_file->type = file_type;
+// 	string_name = (char*)ft_memalloc(namelen + 1);
+// 	ft_memcpy(string_name, name, namelen);
+// 	new_file->name = string_name;
+// 	list_push_back(dir->sub_dirs, new_file);
+// }
+
+// void	process_dir_recursive(t_file *dir, int flags)
+// {
+// 	DIR						*fd;
+// 	static struct dirent	*filename;
+// 	static struct stat		st;
+
+// 	fd = open_folder(dir->name);
+// 	ft_bzero(&st, sizeof(struct stat));
+// 	while (1)
+// 	{
+// 		filename = readdir(fd);
+// 		process_file(dir, filename, flags);
+// 	}
+// 	sort_list(dir->sub_dirs, flags);
+// 	print_list(dir->sub_dirs, flags);
+// 	if (flags & FLAG_R_UPPER)
+// 	{
+// 		remove_non_dirs(dir->sub_dirs); // free some memory
+// 		// recursively call self on each remaining list member
+// 	}
+// }
+
+
