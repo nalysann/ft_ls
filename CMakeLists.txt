@@ -32,6 +32,6 @@ add_executable(ft_ls
         src/main.c
 
         src/parse.c
- include/options.h src/cmp.c include/cmp.h src/process.c include/process.h)
+ include/options.h src/cmp.c include/cmp.h src/process.c include/process.h src/process_long.c)
 
 target_link_libraries(ft_ls ft)
