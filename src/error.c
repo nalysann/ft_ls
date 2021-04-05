@@ -4,15 +4,16 @@
 #include "ft_stdio.h"
 
 #include <stdlib.h>
+#include <unistd.h>
 
 void	illegal_option(char option)
 {
-	ft_printf("ft_ls: illegal option -- %c\n", option);
+	ft_dprintf(STDERR_FILENO, "ft_ls: illegal option -- %c\n", option);
 	usage();
 }
 
 void	usage(void)
 {
-	ft_printf("usage: ft_ls [-%s] [file ...]\n", OPTIONS);
+	ft_dprintf(STDERR_FILENO, "usage: ft_ls [-%s] [file ...]\n", OPTIONS);
 	exit(EXIT_FAILURE);
 }
