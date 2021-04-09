@@ -6,7 +6,7 @@
 /*   By: bgilwood <bgilwood@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/28 19:16:15 by bgilwood          #+#    #+#             */
-/*   Updated: 2021/04/05 21:38:47 by bgilwood         ###   ########.fr       */
+/*   Updated: 2021/04/09 22:46:41 by bgilwood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,11 @@ void	output_files(t_vector files, unsigned *options)
 	while (i < files.size)
 	{
 		file1 = vector_get(&files, i);
-		ft_printf("%s\n", file1->name);
+		ft_printf("%s\t", file1->name);
 		i++;
 	}
+	if (files.size)
+		ft_putendl("");
 }
 
 void	push_file_stat(t_vector *file_stats, struct stat *st, char *filename)

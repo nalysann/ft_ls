@@ -6,6 +6,7 @@
 #include "ft_stdio.h"
 #include "ft_vector.h"
 #include "ft_stdlib.h"
+#include "ft_string.h"
 
 #include <errno.h>
 #include <stddef.h>
@@ -60,6 +61,8 @@ void	process_dir(char *dir_name, unsigned *options)
 		file = readdir(fd);
 		if (!file)
 			break;
+		if (!(*options & OP_A_LOWER) && (!ft_strncmp(file->d_name, ".", 1)))
+			continue;
 		st = (struct stat*)ft_memalloc(sizeof(struct stat));
 		stat(file->d_name, st);
 		push_file_stat(&file_stats, st, file->d_name);
@@ -68,7 +71,8 @@ void	process_dir(char *dir_name, unsigned *options)
 	output_files(file_stats, options);
 }
 
-static void		process_dirs(t_vector dirs, unsigned *options)
+static void		process_dirs(t_vector dirs, unsigned *options, int files,
+								int absent)
 {
 	size_t	i;
 	char	*dir_name;
@@ -77,6 +81,10 @@ static void		process_dirs(t_vector dirs, unsigned *options)
 	while (i < dirs.size)
 	{
 		dir_name = vector_get(&dirs, i);
+		if ((dirs.size > 1 && i > 0) || files)
+			ft_printf("\n%s:\n", dir_name);
+		else if (absent || dirs.size > 1)
+			ft_printf("%s:\n", dir_name);
 		process_dir(dir_name, options);
 		i++;
 	}
@@ -98,7 +106,7 @@ void		process(t_args *args, unsigned *options)
 	if (*options & OP_R_UPPER)
 		process_recursive(args->files, args->dirs, options);
 	else
-		process_dirs(args->dirs, options);
+		process_dirs(args->dirs, options, args->files.size, args->absent.size);
 }
 
 // void	print_error(char *dir_name)

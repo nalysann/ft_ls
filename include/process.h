@@ -1,8 +1,8 @@
 #ifndef PROCESS_H
 # define PROCESS_H
 
-#include "args.h"
-#include <sys/stat.h>
+# include "args.h"
+# include <sys/stat.h>
 # include <dirent.h>
 
 void	process(t_args *args, unsigned *options);
