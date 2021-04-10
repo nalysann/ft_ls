@@ -6,7 +6,7 @@
 /*   By: bgilwood <bgilwood@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 23:59:07 by bgilwood          #+#    #+#             */
-/*   Updated: 2021/04/10 19:29:10 by bgilwood         ###   ########.fr       */
+/*   Updated: 2021/04/10 20:55:53 by bgilwood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,18 +70,18 @@ int	compare_by_name(const void *obj1, const void *obj2)
 	return (ft_strcmp(file1->name, file2->name));
 }
 
-void	sort_files(t_vector file_stats, unsigned int *options)
+void	sort_files(t_vector file_stats, unsigned int options)
 {
-	if (*options & OP_R_LOWER)
+	if (options & OP_R_LOWER)
 	{
-		if (*options & OP_T_LOWER)
+		if (options & OP_T_LOWER)
 			vector_sort(&file_stats, compare_by_time_accessed_rev);
 		else
 			vector_sort(&file_stats, compare_by_name_rev);
 	}
 	else
 	{
-		if (*options & OP_T_LOWER)
+		if (options & OP_T_LOWER)
 			vector_sort(&file_stats, compare_by_time_accessed);
 		else
 			vector_sort(&file_stats, compare_by_name);

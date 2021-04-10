@@ -14,6 +14,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <dirent.h>
 
 static void	process_absent(t_vector absent, unsigned int *options)
 {
@@ -44,12 +45,11 @@ static void	process_files(t_vector files, unsigned int *options)
 		push_file_stat(&file_stats, st, filename);
 	}
 	if (*options != 0)
-		sort_files(file_stats, options);
+		sort_files(file_stats, *options);
 	output_files(file_stats, options);
 	vector_free_deep(&file_stats, free);
 }
 
-#include <dirent.h>
 void	process_dir(char *dir_name, unsigned int *options)
 {
 	DIR				*fd;
@@ -58,6 +58,8 @@ void	process_dir(char *dir_name, unsigned int *options)
 	t_vector		file_stats;
 
 	fd = open_folder(dir_name);
+	if (!fd)
+		return ;
 	file_stats = vector_on_stack();
 	while (1)
 	{
@@ -69,7 +71,7 @@ void	process_dir(char *dir_name, unsigned int *options)
 		stat(file->d_name, &st);
 		push_file_stat(&file_stats, &st, file->d_name);
 	}
-	sort_files(file_stats, options);
+	sort_files(file_stats, *options);
 	output_files(file_stats, options);
 	vector_free_deep(&file_stats, free);
 }
@@ -77,9 +79,13 @@ void	process_dir(char *dir_name, unsigned int *options)
 static void	process_dirs(t_vector dirs, unsigned int *options, int files,
 								int absent)
 {
-	size_t	i;
-	char	*dir_name;
+	size_t		i;
+	char		*dir_name;
 
+	if (*options & (OP_R_LOWER | OP_T_LOWER))
+	{
+		dirs = get_sorted_dirs(dirs, *options);
+	}
 	i = 0;
 	while (i < dirs.size)
 	{
@@ -91,15 +97,6 @@ static void	process_dirs(t_vector dirs, unsigned int *options, int files,
 		process_dir(dir_name, options);
 		i++;
 	}
-}
-
-static void	process_recursive(t_vector files, t_vector dirs,
-								unsigned int *options)
-{
-	(void)dirs;
-	(void)options;
-	(void)files;
-	// TODO
 }
 
 void	process(t_args *args, unsigned int *options)
