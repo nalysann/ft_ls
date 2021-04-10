@@ -13,19 +13,21 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <stdlib.h>
 
-static void		process_absent(t_vector absent, unsigned *options)
+static void	process_absent(t_vector absent, unsigned int *options)
 {
 	size_t	i;
 
 	i = 0;
 	while (i < absent.size)
-		ft_dprintf(STDERR_FILENO,"ft_ls: %s: %s\n", absent.data[i++], strerror(ENOENT));
+		ft_dprintf(STDERR_FILENO, "ft_ls: %s: %s\n", absent.data[i++],
+			strerror(ENOENT));
 	if (absent.size > 0)
 		*options |= OP_FAIL;
 }
 
-static void		process_files(t_vector files, unsigned *options)
+static void	process_files(t_vector files, unsigned int *options)
 {
 	size_t			i;
 	char			*filename;
@@ -37,20 +39,21 @@ static void		process_files(t_vector files, unsigned *options)
 	while (i < files.size)
 	{
 		filename = (char *)vector_get(&files, i++);
-		st = (struct stat*)ft_memalloc(sizeof(struct stat));
+		st = (struct stat *)ft_memalloc(sizeof(struct stat));
 		stat(filename, st);
 		push_file_stat(&file_stats, st, filename);
 	}
 	if (*options != 0)
 		sort_files(file_stats, options);
 	output_files(file_stats, options);
+	vector_free_deep(&file_stats, free);
 }
 
 #include <dirent.h>
-void	process_dir(char *dir_name, unsigned *options)
+void	process_dir(char *dir_name, unsigned int *options)
 {
 	DIR				*fd;
-	struct stat		*st;
+	struct stat		st;
 	struct dirent	*file;
 	t_vector		file_stats;
 
@@ -60,18 +63,18 @@ void	process_dir(char *dir_name, unsigned *options)
 	{
 		file = readdir(fd);
 		if (!file)
-			break;
+			break ;
 		if (!(*options & OP_A_LOWER) && (!ft_strncmp(file->d_name, ".", 1)))
-			continue;
-		st = (struct stat*)ft_memalloc(sizeof(struct stat));
-		stat(file->d_name, st);
-		push_file_stat(&file_stats, st, file->d_name);
+			continue ;
+		stat(file->d_name, &st);
+		push_file_stat(&file_stats, &st, file->d_name);
 	}
 	sort_files(file_stats, options);
 	output_files(file_stats, options);
+	vector_free_deep(&file_stats, free);
 }
 
-static void		process_dirs(t_vector dirs, unsigned *options, int files,
+static void	process_dirs(t_vector dirs, unsigned int *options, int files,
 								int absent)
 {
 	size_t	i;
@@ -90,8 +93,8 @@ static void		process_dirs(t_vector dirs, unsigned *options, int files,
 	}
 }
 
-static void		process_recursive(t_vector files,
-				t_vector dirs, unsigned *options)
+static void	process_recursive(t_vector files, t_vector dirs,
+								unsigned int *options)
 {
 	(void)dirs;
 	(void)options;
@@ -99,7 +102,7 @@ static void		process_recursive(t_vector files,
 	// TODO
 }
 
-void		process(t_args *args, unsigned *options)
+void	process(t_args *args, unsigned int *options)
 {
 	process_absent(args->absent, options);
 	process_files(args->files, options);
