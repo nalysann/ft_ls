@@ -6,7 +6,7 @@
 /*   By: bgilwood <bgilwood@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/13 22:25:56 by bgilwood          #+#    #+#             */
-/*   Updated: 2021/04/04 18:19:35 by bgilwood         ###   ########.fr       */
+/*   Updated: 2021/04/12 21:53:03 by bgilwood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef struct			s_file
 {
 	struct stat			st;
 	char				*name;
-	struct s_file		*parent;
+	char				*parent;
 }						t_file;
 
 

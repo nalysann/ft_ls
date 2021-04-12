@@ -28,11 +28,11 @@ static void	process_absent(t_vector absent, unsigned int *options)
 		*options |= OP_FAIL;
 }
 
-static void	process_files(t_vector files, unsigned int *options)
+static void	process_files(t_vector files, unsigned int options)
 {
 	size_t			i;
 	char			*filename;
-	struct stat		*st;
+	struct stat		st;
 	t_vector		file_stats;
 
 	file_stats = vector_on_stack();
@@ -40,17 +40,16 @@ static void	process_files(t_vector files, unsigned int *options)
 	while (i < files.size)
 	{
 		filename = (char *)vector_get(&files, i++);
-		st = (struct stat *)ft_memalloc(sizeof(struct stat));
-		stat(filename, st);
-		push_file_stat(&file_stats, st, filename);
+		stat(filename, &st);
+		push_file_stat(&file_stats, &st, filename, NULL);
 	}
-	if (*options != 0)
-		sort_files(file_stats, *options);
+	if (options != 0)
+		sort_files(file_stats, options);
 	output_files(file_stats, options);
 	vector_free_deep(&file_stats, free);
 }
 
-void	process_dir(char *dir_name, unsigned int *options)
+void	process_dir(char *dir_name, unsigned int options)
 {
 	DIR				*fd;
 	struct stat		st;
@@ -66,25 +65,25 @@ void	process_dir(char *dir_name, unsigned int *options)
 		file = readdir(fd);
 		if (!file)
 			break ;
-		if (!(*options & OP_A_LOWER) && (!ft_strncmp(file->d_name, ".", 1)))
+		if (!(options & OP_A_LOWER) && (!ft_strncmp(file->d_name, ".", 1)))
 			continue ;
 		stat(file->d_name, &st);
-		push_file_stat(&file_stats, &st, file->d_name);
+		push_file_stat(&file_stats, &st, file->d_name, NULL);
 	}
-	sort_files(file_stats, *options);
+	sort_files(file_stats, options);
 	output_files(file_stats, options);
 	vector_free_deep(&file_stats, free);
 }
 
-static void	process_dirs(t_vector dirs, unsigned int *options, int files,
+static void	process_dirs(t_vector dirs, unsigned int options, int files,
 								int absent)
 {
 	size_t		i;
 	char		*dir_name;
 
-	if (*options & (OP_R_LOWER | OP_T_LOWER))
+	if (options & (OP_R_LOWER | OP_T_LOWER))
 	{
-		dirs = get_sorted_dirs(dirs, *options);
+		dirs = get_sorted_dirs(dirs, options);
 	}
 	i = 0;
 	while (i < dirs.size)
@@ -94,7 +93,10 @@ static void	process_dirs(t_vector dirs, unsigned int *options, int files,
 			ft_printf("\n%s:\n", dir_name);
 		else if (absent || dirs.size > 1)
 			ft_printf("%s:\n", dir_name);
-		process_dir(dir_name, options);
+		if (options & OP_R_UPPER)
+			process_dir_recursive(dir_name, options);
+		else
+			process_dir(dir_name, options);
 		i++;
 	}
 }
@@ -102,11 +104,8 @@ static void	process_dirs(t_vector dirs, unsigned int *options, int files,
 void	process(t_args *args, unsigned int *options)
 {
 	process_absent(args->absent, options);
-	process_files(args->files, options);
-	if (*options & OP_R_UPPER)
-		process_recursive(args->files, args->dirs, options);
-	else
-		process_dirs(args->dirs, options, args->files.size, args->absent.size);
+	process_files(args->files, *options);
+	process_dirs(args->dirs, *options, args->files.size, args->absent.size);
 }
 
 // void	print_error(char *dir_name)
