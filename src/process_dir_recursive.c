@@ -21,12 +21,26 @@
 #include <sys/stat.h>
 #include <stdlib.h>
 
+static char	*get_full_file_name(char *directory, char *file)
+{
+	char *new_name;
+	char *tmp;
+
+	if (directory && ft_strlen(directory))
+	{
+		tmp = ft_strjoin(directory, "/");
+		new_name = ft_strjoin(tmp, file);
+		free(tmp);
+		return new_name;
+	}
+	return file;
+}
+
 static void	process_dirs_recursive(t_vector files, unsigned int options)
 {
 	size_t		i;
 	t_file		*file;
 	char		*dir_name;
-	char		*tmp;
 
 	i = 0;
 	while (i < files.size)
@@ -34,13 +48,10 @@ static void	process_dirs_recursive(t_vector files, unsigned int options)
 		file = vector_get(&files, i++);
 		if (!S_ISDIR(file->st.st_mode))
 			continue ;
-		tmp = "";
-		if (file->parent)
-			tmp = ft_strjoin(file->parent, "/");
-		dir_name = ft_strjoin(tmp, file->name);
-		free(tmp);
+		dir_name = get_full_file_name(file->parent, file->name);
 		ft_printf("\n%s:\n", dir_name);
 		process_dir_recursive(dir_name, options);
+		free(dir_name);
 	}
 }
 
@@ -50,6 +61,7 @@ void	process_dir_recursive(char *dir_name, unsigned int options)
 	struct stat		st;
 	struct dirent	*file;
 	t_vector		file_stats;
+	char			*name;
 
 	fd = open_folder(dir_name);
 	if (!fd)
@@ -62,7 +74,8 @@ void	process_dir_recursive(char *dir_name, unsigned int options)
 			break ;
 		if (!(options & OP_A_LOWER) && (!ft_strncmp(file->d_name, ".", 1)))
 			continue ;
-		stat(file->d_name, &st);
+		name = get_full_file_name(dir_name, file->d_name);
+		stat(name, &st);
 		push_file_stat(&file_stats, &st, file->d_name, dir_name);
 	}
 	sort_files(file_stats, options);
