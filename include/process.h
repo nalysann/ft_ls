@@ -14,5 +14,6 @@ void		push_file_stat(t_vector *file_stats, struct stat *st,
 DIR			*open_folder(char *name);
 void		process_dir_recursive(char *dir_name, unsigned int options);
 t_vector	get_sorted_dirs(t_vector dirs, int options);
+void	    del_item(void *data);
 
 #endif

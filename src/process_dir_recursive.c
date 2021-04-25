@@ -76,10 +76,10 @@ void	process_dir_recursive(char *dir_name, unsigned int options)
 			continue ;
 		name = get_full_file_name(dir_name, file->d_name);
 		stat(name, &st);
-		push_file_stat(&file_stats, &st, ft_strdup(file->d_name), dir_name); // free those names
+		push_file_stat(&file_stats, &st, ft_strdup(file->d_name), dir_name);
 	}
 	sort_files(file_stats, options);
 	output_files(file_stats, options);
 	process_dirs_recursive(file_stats, options);
-	vector_free_deep(&file_stats, free); // todo: free file names
+	vector_free_deep(&file_stats, del_item);
 }

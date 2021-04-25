@@ -6,7 +6,7 @@
 /*   By: bgilwood <bgilwood@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/28 19:16:15 by bgilwood          #+#    #+#             */
-/*   Updated: 2021/04/12 21:53:41 by bgilwood         ###   ########.fr       */
+/*   Updated: 2021/04/25 16:46:05 by bgilwood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,13 @@ t_vector	get_sorted_dirs(t_vector dirs, unsigned int options)
 	}
 	vector_free_deep(&augmented_dirs, free);
 	return (dirs);
+}
+
+void	del_item(void *data)
+{
+	t_file	*item;
+
+	item = (t_file*)data;
+	free(item->name);
+	free(item);
 }
