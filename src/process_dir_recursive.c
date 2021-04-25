@@ -16,6 +16,7 @@
 #include "ft_ls.h"
 #include "libft.h"
 #include "sorting.h"
+#include "output.h"
 
 #include <dirent.h>
 #include <sys/stat.h>

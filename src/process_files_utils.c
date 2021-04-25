@@ -6,7 +6,7 @@
 /*   By: bgilwood <bgilwood@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/28 19:16:15 by bgilwood          #+#    #+#             */
-/*   Updated: 2021/04/25 16:46:05 by bgilwood         ###   ########.fr       */
+/*   Updated: 2021/04/25 20:39:35 by bgilwood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,26 +15,10 @@
 #include "ft_ls.h"
 #include "libft.h"
 #include "sorting.h"
+#include "output.h"
 
 #include <stdlib.h>
 #include <sys/stat.h>
-
-void	output_files(t_vector files, unsigned int options)
-{
-	t_file	*file1;
-	size_t	i;
-
-	(void)options;
-	i = 0;
-	while (i < files.size)
-	{
-		file1 = vector_get(&files, i);
-		ft_printf("%s\t", file1->name);
-		i++;
-	}
-	if (files.size)
-		ft_putendl("");
-}
 
 void	push_file_stat(t_vector *file_stats, struct stat *st, char *filename,
 			char *parent)

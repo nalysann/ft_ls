@@ -2,6 +2,7 @@
 #include "options.h"
 #include "process.h"
 #include "sorting.h"
+#include "output.h"
 
 #include "ft_stdio.h"
 #include "ft_vector.h"
@@ -107,53 +108,3 @@ void	process(t_args *args, unsigned int *options)
 	process_files(args->files, *options);
 	process_dirs(args->dirs, *options, args->files.size, args->absent.size);
 }
-
-// void	print_error(char *dir_name)
-// {
-// 	write(1, "cannot open directory", 22);
-// 	exit(1);
-// }
-
-
-
-// void	add_file_to_list(t_file *dir, long time_modified, __uint8_t namelen,
-// 						 char *name, int file_type)
-// {
-// 	t_file	*new_file;
-// 	char	*string_name;
-
-// 	new_file = (t_file*)ft_memalloc(sizeof(t_file));
-// 	if (new_file == NULL)
-// 		exit_with_error(LIST_ALLOC_MSG, E_LIST_ALLOC);
-// 	new_file->date = time_modified;
-// 	new_file->parent = dir;
-// 	new_file->type = file_type;
-// 	string_name = (char*)ft_memalloc(namelen + 1);
-// 	ft_memcpy(string_name, name, namelen);
-// 	new_file->name = string_name;
-// 	list_push_back(dir->sub_dirs, new_file);
-// }
-
-// void	process_dir_recursive(t_file *dir, int flags)
-// {
-// 	DIR						*fd;
-// 	static struct dirent	*filename;
-// 	static struct stat		st;
-
-// 	fd = open_folder(dir->name);
-// 	ft_bzero(&st, sizeof(struct stat));
-// 	while (1)
-// 	{
-// 		filename = readdir(fd);
-// 		process_file(dir, filename, flags);
-// 	}
-// 	sort_list(dir->sub_dirs, flags);
-// 	print_list(dir->sub_dirs, flags);
-// 	if (flags & FLAG_R_UPPER)
-// 	{
-// 		remove_non_dirs(dir->sub_dirs); // free some memory
-// 		// recursively call self on each remaining list member
-// 	}
-// }
-
-
