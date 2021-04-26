@@ -6,7 +6,7 @@
 #    By: bgilwood <bgilwood@student.21-school.ru>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/09 19:00:32 by nalysann          #+#    #+#              #
-#    Updated: 2021/04/04 20:45:01 by bgilwood         ###   ########.fr        #
+#    Updated: 2021/04/25 20:39:02 by bgilwood         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,9 @@ SRC := cmp.c \
        parse.c \
        process.c \
 	   process_files_utils.c \
-	   sort_files.c
+	   process_dir_recursive.c \
+	   sort_files.c \
+	   output_utils.c
 
 OBJ := $(SRC:.c=.o)
 DEP := $(SRC:.c=.d)
@@ -61,7 +63,7 @@ endif
 
 CFLAGS += -Wall -Wextra -Werror -g \
           $(addprefix -I , $(INC_DIRS)) \
-          -MD \
+		            -MD \
           -march=native -O2 -pipe
 
 LDFLAGS += -L $(FT_DIR)

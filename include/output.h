@@ -1,24 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   open_folder.c                                      :+:      :+:    :+:   */
+/*   output.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bgilwood <bgilwood@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bgilwood <bgilwood@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/13 22:19:57 by bgilwood          #+#    #+#             */
-/*   Updated: 2020/10/13 22:27:11 by bgilwood         ###   ########.fr       */
+/*   Created: 2021/04/25 20:33:27 by bgilwood          #+#    #+#             */
+/*   Updated: 2021/04/25 20:35:16 by bgilwood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <dirent.h>
-#include <string.h>
+#include "ft_ls.h"
+#include "ft_vector.h"
 
-DIR		*open_folder(char *name)
-{
-	DIR	*dir_stream;
-
-	dir_stream = opendir(name);
-	if (dir_stream == NULL)
-		; // error
-	return dir_stream;
-}
+void	long_output(t_file *file);
+void	output_files(t_vector files, unsigned int options);
