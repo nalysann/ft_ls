@@ -6,7 +6,7 @@
 /*   By: bgilwood <bgilwood@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/13 22:25:56 by bgilwood          #+#    #+#             */
-/*   Updated: 2021/04/12 21:53:03 by bgilwood         ###   ########.fr       */
+/*   Updated: 2021/04/26 22:34:13 by bgilwood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <dirent.h>
 # include "ft_list.h"
 # include <sys/types.h>
-#include <sys/stat.h>
+# include <sys/stat.h>
 
 DIR						*open_folder(char *name);
 
@@ -41,7 +41,10 @@ typedef struct			s_file
 	struct stat			st;
 	char				*name;
 	char				*parent;
+	char				*user_name;
+	char				*group_name;
+	char				*month_and_day;
+	char				*time_or_year;
 }						t_file;
-
 
 #endif
