@@ -1,15 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: bgilwood <bgilwood@student.21-school.ru>   +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2020/10/09 19:00:32 by nalysann          #+#    #+#              #
-#    Updated: 2021/04/25 20:39:02 by bgilwood         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME := ft_ls
 
 # **************************************************************************** #
@@ -22,10 +10,10 @@ SRC := cmp.c \
        main.c \
        parse.c \
        process.c \
-	   process_files_utils.c \
-	   process_dir_recursive.c \
-	   sort_files.c \
-	   output_utils.c
+       process_files_utils.c \
+       process_dir_recursive.c \
+       sort_files.c \
+       output_utils.c
 
 OBJ := $(SRC:.c=.o)
 DEP := $(SRC:.c=.d)
@@ -61,10 +49,11 @@ endif
 
 # **************************************************************************** #
 
-CFLAGS += -Wall -Wextra -Werror -g \
+CFLAGS += -Wall -Wextra -Werror \
           $(addprefix -I , $(INC_DIRS)) \
-		            -MD \
-          -march=native -O2 -pipe
+          -MMD \
+          -O0 -g3  # TODO
+#          -O2 -march=native -ftree-vectorize -pipe
 
 LDFLAGS += -L $(FT_DIR)
 
