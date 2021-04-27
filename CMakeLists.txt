@@ -23,15 +23,19 @@ add_subdirectory(libft)
 
 add_executable(ft_ls
         include/args.h
+        include/cmp.h
         include/error.h
-        include/ft_ls.h
+        include/file.h
         include/init.h
+        include/options.h
         include/parse.h
+        include/process.h
+        src/cmp.c
         src/error.c
         src/init.c
         src/main.c
-
         src/parse.c
- include/options.h src/cmp.c include/cmp.h src/process.c include/process.h src/process_long.c)
+        src/process_absent.c
+        src/process_files.c)
 
 target_link_libraries(ft_ls ft)

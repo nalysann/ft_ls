@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: bgilwood <bgilwood@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/13 18:43:22 by bgilwood          #+#    #+#             */
-/*   Updated: 2021/01/14 16:23:18 by nalysann         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "args.h"
 #include "init.h"
 #include "options.h"
@@ -25,7 +13,10 @@ int		main(int argc, char *argv[])
 
 	init(&args, &options);
 	parse(argc, argv, &args, &options);
-	process(&args, &options);
+	process_absent(args.absent, &options);
+	process_files(args.files, &options, 0);
+//	process_dirs(args->dirs, *options, args->files.size, args->absent.size);
+
 
 	if (options & OP_FAIL)
 		return (EXIT_FAILURE);

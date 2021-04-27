@@ -9,12 +9,8 @@ SRC := cmp.c \
        init.c \
        main.c \
        parse.c \
-       process.c \
-       process_files_utils.c \
-       process_dir_recursive.c \
-       sort_files.c \
-       output_utils.c\
-       sort_extra_options.c
+       process_absent.c \
+       process_files.c
 
 OBJ := $(SRC:.c=.o)
 DEP := $(SRC:.c=.d)

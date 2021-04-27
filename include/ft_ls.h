@@ -35,16 +35,4 @@ DIR						*open_folder(char *name);
 // 	struct s_file		*parent;
 // }						t_file;
 
-
-typedef struct			s_file
-{
-	struct stat			st;
-	char				*name;
-	char				*parent;
-	char				*user_name;
-	char				*group_name;
-	char				*month_and_day;
-	char				*time_or_year;
-}						t_file;
-
 #endif

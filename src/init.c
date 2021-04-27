@@ -1,6 +1,6 @@
-#include "args.h"
-
 #include "ft_vector.h"
+
+#include "args.h"
 
 void	init(t_args *args, unsigned *options)
 {
