@@ -2,9 +2,14 @@
 
 #include "file.h"
 
-int		cmp_lexicographical(const void *a, const void *b)
+int		cmp_str_lex(const void *a, const void *b)
 {
 	return ft_strcmp(*(const char **)a, *(const char **)b);
+}
+
+int		cmp_file_lex(const void *a, const void *b)
+{
+	return ft_strcmp((*(t_file **)a)->name, (*(t_file **)b)->name);
 }
 
 int		cmp_modification_time(const void *a, const void *b)

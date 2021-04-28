@@ -9,6 +9,7 @@
 #include "error.h"
 #include "file.h"
 #include "options.h"
+#include "print_files.h"
 
 //#include "sorting.h"
 //#include "output.h"
@@ -62,48 +63,25 @@
 
 void	sort_files(t_vector file_stats, unsigned *options)
 {
-	if (*options & OP_T_LOWER)
-		if (*options & OP_U_LOWER)
-			vector_sort(&file_stats, cmp_lexicographical);
-		else
-			vector_sort(&file_stats, cmp_lexicographical);
-	else
-		vector_sort(&file_stats, cmp_lexicographical);
-}
-
-void	print_files(t_vector stats, unsigned *options)
-{
-	t_file	*file1;
-	size_t	i;
-//	time_t	now;
-
-	i = 0;
-
-	if (*options & OP_L_LOWER)
-		(void)options;
-//		print_files_long(files, options);
-//	now = time(NULL);
-	while (i < stats.size)
-	{
-//		ft_printf("kekek\n");
-		file1 = (t_file *)vector_get(&stats, i);
-//		if (*options & OP_L_LOWER)
-//			long_output(file1, now);
+	vector_sort(&file_stats, cmp_file_lex);
+	// todo
+	(void)options;
+//	if (*options & OP_T_LOWER)
+//		if (*options & OP_U_LOWER)
+//			vector_sort(&file_stats, cmp_file_lex);
 //		else
-		ft_printf("%s\t", file1->name);
-		++i;
-	}
-	if (stats.size > 0)
-		ft_printf("\n");
+//			vector_sort(&file_stats, cmp_file_lex);
+//	else
+//		vector_sort(&file_stats, cmp_file_lex);
 }
 
 void	process_files(t_vector files, unsigned *options, int is_dir)
 {
-	t_vector	stats;
+	t_vector	file_stats;
 	size_t		i;
 	t_file		*file;
 
-	stats = vector_on_stack();
+	file_stats = vector_on_stack();
 	i = 0;
 	while (i < files.size)
 	{
@@ -112,14 +90,14 @@ void	process_files(t_vector files, unsigned *options, int is_dir)
 			ft_error(ALLOC_MSG, E_ALLOC);
 		file->name = (char *)vector_get(&files, i);
 		stat(file->name, &file->st);
-		vector_push_back(&stats, file);
+		vector_push_back(&file_stats, file);
 		++i;
 	}
 	// TODO: disabled by -f
-	sort_files(stats, options);
-	if (*options & OP_L_LOWER)
-		print_files(stats, options, is_dir);
-	else
-		print_long(stats, options, is_dir);
-	vector_free_deep(&stats, free);
+	sort_files(file_stats, options);
+//	if (*options & OP_L_LOWER)
+//		print_files_long(stats, options, is_dir);
+//	else
+	print_files(file_stats, options, is_dir);
+	vector_free_deep(&file_stats, free);
 }

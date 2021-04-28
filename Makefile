@@ -9,6 +9,7 @@ SRC := cmp.c \
        init.c \
        main.c \
        parse.c \
+       print_files.c \
        process_absent.c \
        process_files.c
 

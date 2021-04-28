@@ -17,7 +17,6 @@ int		main(int argc, char *argv[])
 	process_files(args.files, &options, 0);
 //	process_dirs(args->dirs, *options, args->files.size, args->absent.size);
 
-
 	if (options & OP_FAIL)
 		return (EXIT_FAILURE);
 	else
