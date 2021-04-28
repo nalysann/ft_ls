@@ -6,7 +6,7 @@
 #    By: bgilwood <bgilwood@student.21-school.ru>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/09 19:00:32 by nalysann          #+#    #+#              #
-#    Updated: 2021/04/26 22:44:07 by bgilwood         ###   ########.fr        #
+#    Updated: 2021/04/28 23:59:21 by bgilwood         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,6 +40,7 @@ FT := libft.a
 
 INC_DIRS := include \
             $(FT_DIR)/include \
+			$(FT_DIR)/include/internal/printf 
 
 # **************************************************************************** #
 
