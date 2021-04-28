@@ -6,7 +6,7 @@
 /*   By: bgilwood <bgilwood@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/13 22:25:56 by bgilwood          #+#    #+#             */
-/*   Updated: 2021/04/26 22:34:13 by bgilwood         ###   ########.fr       */
+/*   Updated: 2021/04/28 22:59:56 by bgilwood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct			s_file
 	char				*group_name;
 	char				*month_and_day;
 	char				*time_or_year;
+	char				*mode;
 }						t_file;
 
 #endif
