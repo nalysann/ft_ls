@@ -6,7 +6,7 @@
 /*   By: bgilwood <bgilwood@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/28 19:16:15 by bgilwood          #+#    #+#             */
-/*   Updated: 2021/04/29 22:51:57 by bgilwood         ###   ########.fr       */
+/*   Updated: 2021/04/30 00:17:27 by bgilwood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 
 #include <stdlib.h>
 #include <sys/stat.h>
+#include <string.h>
+#include <errno.h>
 
 void	push_file_stat(t_vector *file_stats, struct stat *st, char *filename,
 			char *parent)
@@ -27,7 +29,7 @@ void	push_file_stat(t_vector *file_stats, struct stat *st, char *filename,
 
 	file = (t_file *)ft_memalloc(sizeof(t_file));
 	if (file == NULL)
-		;// error
+		ft_error("memory error", 1);// error
 	file->st = *st;
 	file->name = filename;
 	file->parent = parent;
@@ -40,7 +42,7 @@ DIR	*open_folder(char *name)
 
 	dir_stream = opendir(name);
 	if (dir_stream == NULL)
-		ft_printf("ft_ls: %s: some error\n", name); // error code??
+		ft_printf("ft_ls: %s\n", strerror(errno)); // error code??
 	return (dir_stream);
 }
 
@@ -76,8 +78,21 @@ void	del_item(void *data)
 {
 	t_file	*item;
 
+	if (!data)
+		return ;
 	item = (t_file*)data;
-	free(item->name);
+	if (item->name)
+		free(item->name);
+	if (item->user_name)
+		free(item->user_name);
+	if (item->time_or_year)
+		free(item->time_or_year);
+	if (item->month_and_day)
+		free(item->month_and_day);
+	if (item->mode)
+		free(item->mode);
+	if (item->group_name)
+		free(item->group_name);
 	free(item);
 }
 

@@ -6,7 +6,7 @@
 /*   By: bgilwood <bgilwood@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/25 20:29:32 by bgilwood          #+#    #+#             */
-/*   Updated: 2021/04/29 23:09:49 by bgilwood         ###   ########.fr       */
+/*   Updated: 2021/04/29 23:48:36 by bgilwood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static void	get_file_mode(t_file *file)
 	if (file->st.st_mode & S_IWOTH)
 		file->mode[8] = 'w';
 		//exec
-	// last chars
+	// last chars @
 }
 
 static int month_order(const char *month_name)
@@ -97,7 +97,6 @@ static void	parse_time(t_file *file, time_t now)
 
 	now_str = ctime(&now);
 	file_str = ctime(&(file->st.st_mtimespec.tv_sec));
-	// Thu Nov 24 18:22:48 1986\n\0
 	file->month_and_day = ft_strsub(file_str, 4, 6);
 	now_tmp = ft_atoi(now_str + 20);
 	file_tmp = ft_atoi(file_str + 20);
@@ -118,7 +117,6 @@ void	parse_user_and_group(t_file *file)
 	
 	user = getpwuid(file->st.st_uid);
 	group = getgrgid(file->st.st_gid);
-	// for some reason user and group are sometimes not same as in ls, investigate...
 	if (user)
 		username = ft_strdup(user->pw_name);
 	else
@@ -168,6 +166,6 @@ void	output_files(t_vector files, unsigned int options)
 			ft_printf("%s\t", file1->name);
 		i++;
 	}
-	if (files.size)
+	if (files.size && !(options & OP_L_LOWER))
 		ft_putendl("");
 }

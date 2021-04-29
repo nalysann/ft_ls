@@ -41,17 +41,25 @@ static void	process_dirs_recursive(t_vector files, unsigned int options)
 	}
 }
 
+static void	get_stat(char *dir_name, char *file_name, struct stat *st)
+{
+	char	*name;
+
+	name = get_full_file_name(dir_name, file_name);
+	stat(name, st);
+	free(name);
+}
+
 void	process_dir_recursive(char *dir_name, unsigned int options)
 {
 	DIR				*fd;
 	struct stat		st;
 	struct dirent	*file;
 	t_vector		file_stats;
-	char			*name;
 
 	fd = open_folder(dir_name);
 	if (!fd)
-		return ;
+		return ; // error?
 	file_stats = vector_on_stack();
 	while (1)
 	{
@@ -60,10 +68,10 @@ void	process_dir_recursive(char *dir_name, unsigned int options)
 			break ;
 		if (!(options & OP_A_LOWER) && (!ft_strncmp(file->d_name, ".", 1)))
 			continue ;
-		name = get_full_file_name(dir_name, file->d_name);
-		stat(name, &st);
+		get_stat(dir_name, file->d_name, &st);
 		push_file_stat(&file_stats, &st, ft_strdup(file->d_name), dir_name);
 	}
+	closedir(fd);
 	sort_files(file_stats, options);
 	output_files(file_stats, options);
 	process_dirs_recursive(file_stats, options);
