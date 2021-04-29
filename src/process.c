@@ -56,6 +56,7 @@ void	process_dir(char *dir_name, unsigned int options)
 	struct stat		st;
 	struct dirent	*file;
 	t_vector		file_stats;
+	char			*file_name;
 
 	fd = open_folder(dir_name);
 	if (!fd)
@@ -68,7 +69,9 @@ void	process_dir(char *dir_name, unsigned int options)
 			break ;
 		if (!(options & OP_A_LOWER) && (!ft_strncmp(file->d_name, ".", 1)))
 			continue ;
-		stat(file->d_name, &st);
+		file_name = get_full_file_name(dir_name, file->d_name);
+		stat(file_name, &st);
+		free(file_name);
 		push_file_stat(&file_stats, &st, file->d_name, NULL);
 	}
 	sort_files(file_stats, options);

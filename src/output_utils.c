@@ -6,7 +6,7 @@
 /*   By: bgilwood <bgilwood@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/25 20:29:32 by bgilwood          #+#    #+#             */
-/*   Updated: 2021/04/29 00:05:34 by bgilwood         ###   ########.fr       */
+/*   Updated: 2021/04/29 23:09:49 by bgilwood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,8 +142,9 @@ void    long_output(t_file *file, time_t now)
 	parse_user_and_group(file);
 	parse_time(file, now);
 	get_file_mode(file);
-	ft_printf("%s\t%s\t%s\t%u\t%s\t%s\t%s\n", file->mode, username, groupname,
-		file->st.st_size, file->month_and_day, file->time_or_year, file->name);
+	ft_printf("%s\t%hu\t%s\t%s\t%u\t%s\t%s\t%s\n", file->mode, file->st.st_nlink, file->user_name,
+		file->group_name, file->st.st_size, file->month_and_day,
+		file->time_or_year, file->name);
 }
 
 void	output_files(t_vector files, unsigned int options)

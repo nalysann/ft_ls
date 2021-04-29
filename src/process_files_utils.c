@@ -6,7 +6,7 @@
 /*   By: bgilwood <bgilwood@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/28 19:16:15 by bgilwood          #+#    #+#             */
-/*   Updated: 2021/04/25 20:39:35 by bgilwood         ###   ########.fr       */
+/*   Updated: 2021/04/29 22:51:57 by bgilwood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,4 +79,19 @@ void	del_item(void *data)
 	item = (t_file*)data;
 	free(item->name);
 	free(item);
+}
+
+char	*get_full_file_name(char *directory, char *file)
+{
+	char *new_name;
+	char *tmp;
+
+	if (directory && ft_strlen(directory))
+	{
+		tmp = ft_strjoin(directory, "/");
+		new_name = ft_strjoin(tmp, file);
+		free(tmp);
+		return new_name;
+	}
+	return file;
 }

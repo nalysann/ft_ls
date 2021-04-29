@@ -22,21 +22,6 @@
 #include <sys/stat.h>
 #include <stdlib.h>
 
-static char	*get_full_file_name(char *directory, char *file)
-{
-	char *new_name;
-	char *tmp;
-
-	if (directory && ft_strlen(directory))
-	{
-		tmp = ft_strjoin(directory, "/");
-		new_name = ft_strjoin(tmp, file);
-		free(tmp);
-		return new_name;
-	}
-	return file;
-}
-
 static void	process_dirs_recursive(t_vector files, unsigned int options)
 {
 	size_t		i;
