@@ -73,7 +73,7 @@ void	process_dir_recursive(char *dir_name, unsigned int options)
 	}
 	closedir(fd);
 	sort_files(file_stats, options);
-	output_files(file_stats, options);
+	output_files(file_stats, options, 1);
 	process_dirs_recursive(file_stats, options);
 	vector_free_deep(&file_stats, del_item);
 }

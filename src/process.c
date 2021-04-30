@@ -46,11 +46,11 @@ static void	process_files(t_vector files, unsigned int options)
 	}
 	if (options != 0)
 		sort_files(file_stats, options);
-	output_files(file_stats, options);
+	output_files(file_stats, options, 0);
 	vector_free_deep(&file_stats, free);
 }
 
-void	process_dir(char *dir_name, unsigned int options)
+static void	process_dir(char *dir_name, unsigned int options)
 {
 	DIR				*fd;
 	struct stat		st;
@@ -75,7 +75,7 @@ void	process_dir(char *dir_name, unsigned int options)
 		push_file_stat(&file_stats, &st, file->d_name, NULL);
 	}
 	sort_files(file_stats, options);
-	output_files(file_stats, options);
+	output_files(file_stats, options, 1);
 	vector_free_deep(&file_stats, free);
 }
 

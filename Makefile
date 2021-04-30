@@ -6,7 +6,7 @@
 #    By: bgilwood <bgilwood@student.21-school.ru>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/09 19:00:32 by nalysann          #+#    #+#              #
-#    Updated: 2021/04/28 23:59:21 by bgilwood         ###   ########.fr        #
+#    Updated: 2021/04/30 23:55:45 by bgilwood         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,9 @@ SRC := cmp.c \
 	   process_files_utils.c \
 	   process_dir_recursive.c \
 	   sort_files.c \
-	   output_utils.c\
+	   output.c \
+	   output_file_mode.c \
+	   output_time.c \
 	   sort_extra_options.c
 
 OBJ := $(SRC:.c=.o)
