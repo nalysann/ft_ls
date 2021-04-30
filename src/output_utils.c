@@ -6,7 +6,7 @@
 /*   By: bgilwood <bgilwood@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/25 20:29:32 by bgilwood          #+#    #+#             */
-/*   Updated: 2021/04/29 23:48:36 by bgilwood         ###   ########.fr       */
+/*   Updated: 2021/04/30 23:27:39 by bgilwood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,34 @@ static char	get_file_type(mode_t mode)
 	return ('-');
 }
 
+static void	fill_exec_rights(t_file *file)
+{
+	if (file->st.st_mode & S_IXUSR)
+	{
+		file->mode[3] = 'x';
+		if (file->st.st_mode & S_ISUID)
+			file->mode[3] = 's';
+	}
+	else if (file->st.st_mode & S_ISUID)
+		file->mode[3] = 'S';
+	if (file->st.st_mode & S_IXGRP)
+	{
+		file->mode[6] = 'x';
+		if (file->st.st_mode & S_ISGID)
+			file->mode[6] = 's';
+	}
+	else if (file->st.st_mode & S_ISGID)
+		file->mode[6] = 'S';
+	if (file->st.st_mode & S_IXOTH)
+	{
+		file->mode[9] = 'x';
+		if (file->st.st_mode & S_ISVTX)
+			file->mode[9] = 't';
+	}
+	else if (file->st.st_mode & S_ISVTX)
+		file->mode[9] = 'T';
+}
+
 static void	get_file_mode(t_file *file)
 {
 	file->mode = ft_strnew(11);
@@ -44,18 +72,15 @@ static void	get_file_mode(t_file *file)
 		file->mode[1] = 'r';
 	if (file->st.st_mode & S_IWUSR)
 		file->mode[2] = 'w';
-		// todo: execution rights are more complicated
-
 	if (file->st.st_mode & S_IRGRP)
 		file->mode[4] = 'r';
 	if (file->st.st_mode & S_IWGRP)
 		file->mode[5] = 'w';
-		//exec
 	if (file->st.st_mode & S_IROTH)
 		file->mode[7] = 'r';
 	if (file->st.st_mode & S_IWOTH)
 		file->mode[8] = 'w';
-		//exec
+	fill_exec_rights(file);
 	// last chars @
 }
 
