@@ -9,9 +9,9 @@ SRC := cmp.c \
        init.c \
        main.c \
        parse.c \
-       print_files.c \
+       print.c \
        process_absent.c \
-       process_files.c
+       process_present.c
 
 OBJ := $(SRC:.c=.o)
 DEP := $(SRC:.c=.d)

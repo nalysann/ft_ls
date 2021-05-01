@@ -7,9 +7,9 @@
 
 #include "cmp.h"
 #include "error.h"
-#include "file.h"
+#include "item.h"
 #include "options.h"
-#include "print_files.h"
+#include "print.h"
 
 //#include "sorting.h"
 //#include "output.h"

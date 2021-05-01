@@ -6,16 +6,15 @@
 
 #include <stdlib.h>
 
-int		main(int argc, char *argv[])
+int	main(int argc, char *argv[])
 {
-	t_args		args;
-	unsigned	options;
+	t_args			args;
+	unsigned int	options;
 
 	init(&args, &options);
 	parse(argc, argv, &args, &options);
 	process_absent(args.absent, &options);
-	process_files(args.files, &options, 0);
-//	process_dirs(args->dirs, *options, args->files.size, args->absent.size);
+	process_present(args.present, &options);
 
 	if (options & OP_FAIL)
 		return (EXIT_FAILURE);

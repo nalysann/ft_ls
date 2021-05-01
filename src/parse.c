@@ -3,17 +3,18 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#include "ft_vector.h"
-#include "ft_stdio.h"
+#include "ft_stdlib.h"
 #include "ft_string.h"
+#include "ft_vector.h"
 
 #include "args.h"
 #include "cmp.h"
 #include "error.h"
+#include "item.h"
 #include "options.h"
 #include "parse.h"
 
-static void		handle_options(unsigned *options, unsigned op)
+static void	handle_options(unsigned int *options, unsigned int op)
 {
 	*options |= op;
 	if (op == OP_G_LOWER)
@@ -39,7 +40,7 @@ static void		handle_options(unsigned *options, unsigned op)
 		*options &= ~OP_G_UPPER;
 }
 
-static int		parse_options(int argc, char *argv[], unsigned *options)
+static int	parse_options(int argc, char *argv[], unsigned int *options)
 {
 	int		i;
 	int		j;
@@ -66,35 +67,71 @@ static int		parse_options(int argc, char *argv[], unsigned *options)
 	return (i);
 }
 
-void			parse(int argc, char *argv[], t_args *args, unsigned *options)
+static char	*get_path(const char *name, const char *parent)
 {
-	static char		*dot = ".";
+	char	*path;
+	size_t	parent_len;
+	size_t	name_len;
+
+	if (!parent)
+		return (ft_strdup(name));
+	parent_len = ft_strlen(parent);
+	if (parent[parent_len - 1] == '/')
+		--parent_len;
+	name_len = ft_strlen(name);
+	path = (char *)xmalloc(parent_len + 1 + name_len + 1);
+	ft_memmove(path, parent, parent_len);
+	path[parent_len] = '/';
+	ft_memmove(path + parent_len + 1, name, name_len);
+	path[parent_len + 1 + name_len] = '\0';
+	return (path);
+}
+
+void	add_item(t_vector *items, const char *name, const char *parent)
+{
+	t_item		*item;
+	char		buf[PATH_MAX + 1];
+	ssize_t		ret;
+
+	item = (t_item *)xcalloc(1, sizeof(t_item));
+	item->path = get_path(name, parent);
+	item->path_len = ft_strlen(item->path);
+	if (parent)
+	{
+		item->name = ft_strdup(name);
+		item->name_len = ft_strlen(item->name);
+	}
+	lstat(item->path, &item->st);
+	if (S_ISLNK(item->st.st_mode))
+	{
+		ret = readlink(item->path, buf, PATH_MAX);
+		buf[ret] = '\0';
+		item->link = ft_strdup(buf);
+		item->link_len = ft_strlen(item->link);
+	}
+	vector_push_back(items, item);
+}
+
+void	parse(int argc, char *argv[], t_args *args, unsigned int *options)
+{
 	int				i;
 	struct stat		st;
 
 	i = parse_options(argc, argv, options);
-	if (i == argc)
-		vector_push_back(&args->dirs, dot);
 	if (i + 1 < argc)
 		*options |= OP_DIR_NAME;
 	while (i < argc)
 	{
-		if (stat(argv[i], &st) != 0)
-			if (errno == ENOENT)
-				vector_push_back(&args->absent, argv[i]);
-			else // TODO
-				ft_error(DEBUG_MSG, E_DEBUG);
+		if (lstat(argv[i], &st) != 0 && errno == ENOENT)
+			vector_push_back(&args->absent, argv[i]);
 		else
-			if (S_ISDIR(st.st_mode))
-				vector_push_back(&args->dirs, argv[i]);
-			else
-				vector_push_back(&args->files, argv[i]);
+			add_item(&args->present, argv[i], NULL);
 		++i;
 	}
-	if (args->files.size == 0)
-		*options |= OP_NO_FILES;
-	// TODO: sort is disabled by -f
+	if (args->present.size == 0)
+		add_item(&args->present, ".", NULL);
+	if (*options & OP_F_LOWER)
+		return ;
 	vector_sort(&args->absent, cmp_str_lex);
-	vector_sort(&args->dirs, cmp_str_lex);
-	vector_sort(&args->files, cmp_str_lex);
+	vector_sort(&args->present, cmp_item_lex);
 }

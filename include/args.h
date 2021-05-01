@@ -3,11 +3,12 @@
 
 # include "ft_vector.h"
 
-typedef struct	s_args
+struct s_args
 {
 	t_vector	absent;
-	t_vector	files;
-	t_vector	dirs;
-}				t_args;
+	t_vector	present;
+};
+
+typedef struct s_args	t_args;
 
 #endif

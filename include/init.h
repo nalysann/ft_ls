@@ -3,6 +3,6 @@
 
 # include "args.h"
 
-void	init(t_args *args, unsigned* options);
+void	init(t_args *args, unsigned int *options);
 
 #endif

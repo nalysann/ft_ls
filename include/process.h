@@ -3,8 +3,8 @@
 
 #include "ft_vector.h"
 
-void	process_absent(t_vector absent, unsigned *options);
-void	process_files(t_vector files, unsigned *options, int is_dir);
+void	process_absent(t_vector absent, unsigned int *options);
+void	process_present(t_vector present, unsigned int *options);
 //static void	process_dirs(t_vector dirs, unsigned int options, int files,
 //								int absent)
 
