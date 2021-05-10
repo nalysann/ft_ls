@@ -6,7 +6,7 @@
 #    By: bgilwood <bgilwood@student.21-school.ru>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/09 19:00:32 by nalysann          #+#    #+#              #
-#    Updated: 2021/04/30 23:55:45 by bgilwood         ###   ########.fr        #
+#    Updated: 2021/05/10 19:21:27 by bgilwood         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,8 @@ SRC := cmp.c \
 	   output.c \
 	   output_file_mode.c \
 	   output_time.c \
-	   sort_extra_options.c
+	   sort_extra_options.c \
+	   long_output_utils.c  
 
 OBJ := $(SRC:.c=.o)
 DEP := $(SRC:.c=.d)

@@ -6,7 +6,7 @@
 /*   By: bgilwood <bgilwood@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/30 23:39:00 by bgilwood          #+#    #+#             */
-/*   Updated: 2021/05/01 01:44:32 by bgilwood         ###   ########.fr       */
+/*   Updated: 2021/05/10 19:23:08 by bgilwood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,40 +45,6 @@ void	parse_user_and_group(t_file *file)
 	}
 	file->user_name = username;
 	file->group_name = groupname;
-}
-
-static void	long_output(t_file *file, t_max_lengths *lens)
-{
-	char	*s1;
-	char	*s2;
-	char	*s3;
-	
-	ft_printf("%-11s", file->mode);
-	s1 = ft_itoa((int) lens->num_links_len + 1);
-	s2 = ft_strjoin("%", s1);
-	free(s1);
-	s1 = ft_strjoin(s2, "hu");
-	free(s2);
-	s2 = ft_strjoin(s1, "%");
-	free(s1);
-	s1 = ft_itoa((int) lens->user_len + 2);
-	s3 = ft_strjoin(s2, s1);
-	free(s1);
-	free(s2);
-	s1 = ft_strjoin(s3, "s");
-	free(s3);
-	s3 = ft_strjoin(s1, "%");
-	free(s1);
-	s2 = ft_itoa((int) lens->group_len + 2);
-	s1 = ft_strjoin(s3, s2);
-	free(s2);
-	free(s3);
-	s2 = ft_strjoin(s1, "s");
-	free(s1);
-	ft_printf(s2, file->st.st_nlink, file->user_name, file->group_name);
-	ft_printf("\t%u\t%s\t%s\t%s\n", file->st.st_size, file->month_and_day,
-		file->time_or_year, file->name);
-		(void)lens;
 }
 
 void	long_output_prep(t_file *file, time_t now, t_max_lengths *lens)

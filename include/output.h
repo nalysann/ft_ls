@@ -6,7 +6,7 @@
 /*   By: bgilwood <bgilwood@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/25 20:33:27 by bgilwood          #+#    #+#             */
-/*   Updated: 2021/05/01 01:02:16 by bgilwood         ###   ########.fr       */
+/*   Updated: 2021/05/10 19:21:53 by bgilwood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,3 +30,4 @@ typedef struct s_max_lengths
     blkcnt_t    total;
 }               t_max_lengths;
 
+void	long_output(t_file *file, t_max_lengths *lens);
